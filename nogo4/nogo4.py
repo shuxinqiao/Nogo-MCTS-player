@@ -64,8 +64,8 @@ class NoGoFlatMC():
         """
         cboard = board.copy()
         cboard.play_move(move, toplay)
-        opp = GoBoardUtil.opponent(toplay)
-        return self.playGame(cboard, opp), cboard
+        #opp = GoBoardUtil.opponent(toplay)
+        return self.playGasimulate_gameme(cboard), cboard
     '''
 
     def simulate(self, board, toplay):

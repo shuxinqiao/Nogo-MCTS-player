@@ -10,7 +10,7 @@ def pattern_move(board, color, weights_data):
         return None
     else:
         for move in legal_moves:
-            weights.append(check_neighbor(board, move))
+            weights.append(check_neighbor(board, move, weights_data))
         return select_best_move(legal_moves, weights)
 
 def check_neighbor(board, point, weights_data):
