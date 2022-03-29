@@ -18,7 +18,7 @@ def ucb(stats, stats_rave, C, i, n):
     return rave_val + C * sqrt(log(n) / stats[i][1])
 
 def setBeta(stats, i, n):
-    k = 40
+    k = 2 * n
     # lec
     return sqrt(k / (3 * n + k))
     # paper

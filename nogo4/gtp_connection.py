@@ -54,8 +54,7 @@ class GtpConnection():
             "gogui-analyze_commands": self.gogui_analyze_cmd,
             "timelimit": self.timelimit_cmd
         }
-        #self.timelimit = 30 
-        self.timelimit = 28 
+        self.timelimit = 30 
 
         # used for argument checking
         # values: (required number of arguments, 
