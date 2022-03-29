@@ -10,7 +10,7 @@ from ucb import runUcb
 import pattern
 
 # Global
-weights_data = np.loadtxt(".weights.txt")
+weights_data = np.loadtxt("weights.txt")
 
 def undo(board, move):
     board.board[move] = EMPTY

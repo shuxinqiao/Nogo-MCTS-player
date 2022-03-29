@@ -80,6 +80,8 @@ def runUcb(player, board, C, moves, toplay):
 
     #bestIndex = bestArm(stats)
     bestIndex = findBest(stats, stats_rave, C, n)
+    
     best = moves[bestIndex]
+    bestMoveSet(player, best)
     #writeMoves_ucb(board, moves, stats)
     return best
