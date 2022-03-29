@@ -65,7 +65,7 @@ def runUcb(player, board, C, moves, toplay):
     num_simulation = len(moves) * player.simulations_per_move
     for n in range(num_simulation):
         moveIndex = findBest(stats, stats_rave, C, n)
-        bestMoveSet(player, moves[moveIndex])
+        bestMoveSet(player, moves[bestArm(stats)])
         result, cboard = player.simulate(board, moves[moveIndex], toplay)
         if result == toplay:
             stats[moveIndex][0] += 1  # win +1
@@ -79,7 +79,7 @@ def runUcb(player, board, C, moves, toplay):
             stats_rave[moveIndex][1] += 1   # move appear
 
     #bestIndex = bestArm(stats)
-    bestIndex = findBest(stats, stats_rave, C, n)
+    bestIndex = bestArm(stats)
     
     best = moves[bestIndex]
     bestMoveSet(player, best)
