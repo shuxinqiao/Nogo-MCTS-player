@@ -5,6 +5,13 @@ from simple_board import SimpleGoBoard
 import numpy as np
 import random 
 
+# Assignment 4 import
+from ucb import runUcb
+import pattern
+
+# Global
+weights_data = np.loadtxt(".weights.txt")
+
 def undo(board, move):
     board.board[move] = EMPTY
     board.current_player = GoBoardUtil.opponent(board.current_player)
@@ -33,6 +40,34 @@ class NoGoFlatMC():
         self.simulations_per_move = 10
         self.best_move = None
 
+        # Assignment 4 New
+        self.ucb_C = 0.4
+
+    def simulate_game(self, board):
+        limit=50
+
+        for _ in range(limit):
+            color = board.current_player
+            move = pattern.pattern_move(board, color, weights_data)
+            if move == None:
+                return GoBoardUtil.opponent(color)
+            board.play_move(move, color)
+            
+        if GoBoardUtil.generate_legal_moves(board, color) == []:
+            return GoBoardUtil.opponent(color)
+        else:
+            return color
+    
+    def simulate(self, board, move, toplay):
+        """
+        Run a simulated game for a given move.
+        """
+        cboard = board.copy()
+        cboard.play_move(move, toplay)
+        opp = GoBoardUtil.opponent(toplay)
+        return self.playGame(cboard, opp), cboard
+    '''
+
     def simulate(self, board, toplay):
         """
         Run a simulated game for a given starting move.
@@ -40,7 +75,12 @@ class NoGoFlatMC():
         res = game_result(board)
         simulation_moves = []
         while (res is None):
-            move = GoBoardUtil.generate_random_move(board, board.current_player)
+            # random move selection
+            #move = GoBoardUtil.generate_random_move(board, board.current_player)
+            # UCB-RAVE move selection
+            copyBoard = board.copy()
+            move = runUcb(self, copyBoard, self.ucb_C, allMoves, color)
+
             play_move(board, move, board.current_player)
             simulation_moves.append(move)
             res = game_result(board)
@@ -48,6 +88,7 @@ class NoGoFlatMC():
             undo(board, m)
         result = 1.0 if res == toplay else 0.0
         return result
+    '''
 
     def get_move(self, original_board, color):
         """
@@ -62,6 +103,7 @@ class NoGoFlatMC():
         self.best_move = moves[0]
         wins = np.zeros(len(moves))
         visits = np.zeros(len(moves))
+        '''
         for _ in range(self.simulations_per_move):
             for i, move in enumerate(moves):
                 play_move(board, move, toplay)
@@ -80,6 +122,9 @@ class NoGoFlatMC():
                     self.best_move = move 
                 undo(board, move)
             assert best_move is not None 
+        '''
+        move = runUcb(self, board, self.ucb_C, moves, toplay)
+
         return best_move
 
 def run():
