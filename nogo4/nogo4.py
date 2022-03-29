@@ -124,8 +124,8 @@ class NoGoFlatMC():
             assert best_move is not None 
         '''
         move = runUcb(self, board, self.ucb_C, moves, toplay)
-
-        return best_move
+        return move
+        #return best_move
 
 def run():
     """

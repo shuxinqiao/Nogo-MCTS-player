@@ -35,6 +35,8 @@ def findBest(stats, stats_rave, C, n):
     assert best != -1
     return best
 
+def bestMoveSet(player, move):
+    player.best_move = move
 
 def bestArm(stats):  # Most-pulled arm
     best = -1
@@ -63,6 +65,7 @@ def runUcb(player, board, C, moves, toplay):
     num_simulation = len(moves) * player.simulations_per_move
     for n in range(num_simulation):
         moveIndex = findBest(stats, stats_rave, C, n)
+        bestMoveSet(player, moves[moveIndex])
         result, cboard = player.simulate(board, moves[moveIndex], toplay)
         if result == toplay:
             stats[moveIndex][0] += 1  # win +1
