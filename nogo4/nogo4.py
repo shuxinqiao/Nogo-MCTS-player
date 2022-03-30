@@ -41,7 +41,7 @@ class NoGoFlatMC():
         self.best_move = None
 
         # Assignment 4 New
-        self.ucb_C = 1.4142#0.4
+        self.ucb_C = 0.4
 
     def simulate_game(self, board):
         limit=50
