@@ -10,7 +10,7 @@ from ucb import runUcb
 import pattern
 
 # Global
-weights_data = np.loadtxt("nogo4/weights.txt")
+#weights_data = np.loadtxt("nogo4/weights.txt")
 
 def undo(board, move):
     board.board[move] = EMPTY
@@ -48,7 +48,12 @@ class NoGoFlatMC():
 
         for _ in range(limit):
             color = board.current_player
-            move = pattern.pattern_move(board, color, weights_data)
+            # pattern move
+            # move = pattern.pattern_move(board, color, weights_data)
+
+            # random move
+            move = GoBoardUtil.generate_random_move(board, color)
+
             if move == None:
                 return GoBoardUtil.opponent(color)
             board.play_move(move, color)
