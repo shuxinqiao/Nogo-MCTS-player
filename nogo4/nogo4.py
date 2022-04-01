@@ -15,7 +15,7 @@ import os
 
 # Assignment 4 Global
 cwd = os.getcwd()
-weights_data = np.loadtxt(cwd + "weights.txt")
+weights_data = np.loadtxt(cwd + '/' + "weights.txt")
 
 #################################################
 '''
