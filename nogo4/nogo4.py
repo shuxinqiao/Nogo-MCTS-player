@@ -8,6 +8,14 @@ from board import GoBoard
 
 # Assignment 4 import
 from ucb import runUcb
+from pattern import pattern_move, check_neighbor
+import numpy as np
+import os
+
+
+# Assignment 4 Global
+cwd = os.getcwd()
+weights_data = np.loadtxt(cwd + "weights.txt")
 
 #################################################
 '''
@@ -31,7 +39,7 @@ class NoGo:
         self.version = 1.0
         self.simulations_per_move = 200
         self.best_move = None
-        
+
         # Assignment 4 New
         self.ucb_C = 0.4
 
@@ -74,7 +82,7 @@ class NoGo:
         toplay = board.current_player
         assert color == toplay
         self.best_move = moves[0]
-        move = runUcb(self, board, self.ucb_C, moves, toplay)
+        move = runUcb(self, board, self.ucb_C, moves, toplay, weights_data)
         return move
         #move = GoBoardUtil.generate_random_move(board, color)
         #return move

@@ -1,5 +1,10 @@
 from math import sqrt, log
 import numpy as np
+
+# Assignment 4 import
+from pattern import check_neighbor
+
+
 INFINITY = float("inf")
 
 
@@ -10,26 +15,27 @@ def rave(stats_rave, mu_ucb, beta, i):
     mu_rave = mean(stats_rave, i)
     return (1 - beta) * mu_ucb + beta * mu_rave
 
-def ucb(stats, stats_rave, C, i, n):
+def ucb(board, stats, stats_rave, C, i, n, weights_data, moves):
     if stats[i][1] == 0:
         return INFINITY
     mu_ucb = mean(stats, i)
     beta = setBeta(stats, i, n)
     rave_val = rave(stats_rave, mu_ucb, beta, i)
-    return rave_val + C * sqrt(log(n) / stats[i][1])
+    weight = check_neighbor(board, moves[i], weights_data)
+    return rave_val + C * sqrt(log(n) / stats[i][1]) + weight
 
 def setBeta(stats, i, n):
-    k = n
+    k = 5 * n
     # lec
     return sqrt(k / (3 * n + k))
     # paper
     #beta = stats[i][0] 
 
-def findBest(stats, stats_rave, C, n):
+def findBest(board, stats, stats_rave, C, n, weights_data, moves):
     best = -1
     bestScore = -INFINITY
     for i in range(len(stats)):
-        score = ucb(stats, stats_rave, C, i, n)
+        score = ucb(board, stats, stats_rave, C, i, n, weights_data, moves)
         if score > bestScore:
             bestScore = score
             best = i
@@ -60,12 +66,12 @@ def byPulls(tuple):
     return tuple[3]
 
 
-def runUcb(player, board, C, moves, toplay):
+def runUcb(player, board, C, moves, toplay, weights_data):
     stats = [[0, 0] for _ in moves]
     stats_rave = [[0, 0] for _ in moves]
     num_simulation = len(moves) * player.simulations_per_move
     for n in range(num_simulation):
-        moveIndex = findBest(stats, stats_rave, C, n)
+        moveIndex = findBest(board, stats, stats_rave, C, n, weights_data, moves)
         bestMoveSet(player, moves[np.argmax(stats,axis=0)[0]])
         #bestMoveSet(player, moves[bestArm(stats)])
         result, cboard = player.simulate(board, moves[moveIndex], toplay)
