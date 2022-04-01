@@ -22,7 +22,7 @@ def ucb(board, stats, stats_rave, C, i, n, weights_data, moves):
     beta = setBeta(stats, i, n)
     rave_val = rave(stats_rave, mu_ucb, beta, i)
     weight = check_neighbor(board, moves[i], weights_data)
-    return rave_val + C * sqrt(log(n) / stats[i][1]) + weight
+    return rave_val + C * sqrt(log(n) / stats[i][1]) + ((weight - 1) / 10)
 
 def setBeta(stats, i, n):
     k = 5 * n
