@@ -1,4 +1,5 @@
 from math import sqrt, log
+import numpy as np
 INFINITY = float("inf")
 
 
@@ -65,7 +66,8 @@ def runUcb(player, board, C, moves, toplay):
     num_simulation = len(moves) * player.simulations_per_move
     for n in range(num_simulation):
         moveIndex = findBest(stats, stats_rave, C, n)
-        bestMoveSet(player, moves[bestArm(stats)])
+        bestMoveSet(player, moves[np.argmax(stats,axis=0)[0]])
+        #bestMoveSet(player, moves[bestArm(stats)])
         result, cboard = player.simulate(board, moves[moveIndex], toplay)
         if result == toplay:
             stats[moveIndex][0] += 1  # win +1
@@ -79,9 +81,11 @@ def runUcb(player, board, C, moves, toplay):
             stats_rave[moveIndex][1] += 1   # move appear
 
     #bestIndex = bestArm(stats)
-    bestIndex = bestArm(stats)
-    
-    best = moves[bestIndex]
+    #bestIndex = bestArm(stats)
+    # move index with maximum count
+    max_index = np.argmax(stats,axis=0)[0]
+    # update best move
+    best = moves[max_index]
     bestMoveSet(player, best)
     #writeMoves_ucb(board, moves, stats)
     return best
