@@ -5,6 +5,10 @@
 from gtp_connection import GtpConnection
 from board_util import GoBoardUtil
 from board import GoBoard
+
+# Assignment 4 import
+from ucb import runUcb
+
 #################################################
 '''
 This is a uniform random NoGo player served as the starter code
@@ -25,13 +29,55 @@ class NoGo:
 
         self.name = "NoGo4"
         self.version = 1.0
+        self.simulations_per_move = 200
+        self.best_move = None
+        
+        # Assignment 4 New
+        self.ucb_C = 0.4
+
+
+    def simulate(self, board, move, toplay):
+        """
+        Run a simulated game for a given move.
+        """
+        cboard = board.copy()
+        cboard.play_move(move, toplay)
+        #opp = GoBoardUtil.opponent(toplay)
+        return self.simulate_game(cboard), cboard
+
+
+    def simulate_game(self, board):
+        limit=50
+
+        for _ in range(limit):
+            color = board.current_player
+            # random move
+            move = GoBoardUtil.generate_random_move(board, color)
+
+            if move == None:
+                return GoBoardUtil.opponent(color)
+            board.play_move(move, color)
+            
+        if GoBoardUtil.generate_legal_moves(board, color) == []:
+            return GoBoardUtil.opponent(color)
+        else:
+            return color
+    
+    
 
     def get_move(self, board:GoBoard, color:int):
         """
         Select a random move.
         """
-        move = GoBoardUtil.generate_random_move(board, color)
+        board = board.copy()
+        moves = GoBoardUtil.generate_legal_moves(board, board.current_player)
+        toplay = board.current_player
+        assert color == toplay
+        self.best_move = moves[0]
+        move = runUcb(self, board, self.ucb_C, moves, toplay)
         return move
+        #move = GoBoardUtil.generate_random_move(board, color)
+        #return move
         
 def run():
     """

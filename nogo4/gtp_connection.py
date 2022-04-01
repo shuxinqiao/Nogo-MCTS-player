@@ -19,6 +19,7 @@ from board_util import (
     coord_to_point,
 )
 import re
+import signal
 
 class GtpConnection:
     def __init__(self, go_engine, board, debug_mode=False):
@@ -36,6 +37,7 @@ class GtpConnection:
         self.go_engine = go_engine
         self.board = board
         self.timelimit = 30
+        signal.signal(signal.SIGALRM, self.handler)
         self.commands = {
             "protocol_version": self.protocol_version_cmd,
             "quit": self.quit_cmd,
@@ -327,7 +329,16 @@ class GtpConnection:
         board_color = args[0].lower()
         color = color_to_int(board_color)
 
-        move = self.go_engine.get_move(self.board, color)
+        try:
+            signal.alarm(int(self.timelimit))
+            self.sboard = self.board.copy()
+            move = self.go_engine.get_move(self.board, color)
+            self.board=self.sboard
+            signal.alarm(0)
+        except Exception as e:
+            move = self.go_engine.best_move
+
+        #move = self.go_engine.get_move(self.board, color)
     
         # no move to play on the board
         if move is None:
