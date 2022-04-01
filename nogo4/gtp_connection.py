@@ -68,6 +68,10 @@ class GtpConnection:
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
         }
 
+    def handler(self, signum, fram):
+        self.board = self.sboard
+        raise Exception("unknown")
+
     def write(self, data):
         stdout.write(data)
 
