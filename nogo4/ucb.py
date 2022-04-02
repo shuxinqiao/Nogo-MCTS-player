@@ -21,11 +21,11 @@ def ucb(board, stats, stats_rave, C, i, n, weights_data, moves):
     mu_ucb = mean(stats, i)
     beta = setBeta(stats, i, n)
     rave_val = rave(stats_rave, mu_ucb, beta, i)
-    weight = check_neighbor(board, moves[i], weights_data)
-    return rave_val + C * sqrt(log(n) / stats[i][1]) + ((weight - 1) / 10)
+    #weight = check_neighbor(board, moves[i], weights_data)
+    return rave_val + C * sqrt(log(n) / stats[i][1]) #+ ((weight - 1) / 10)
 
 def setBeta(stats, i, n):
-    k = 5 * n
+    k = 1 * n
     # lec
     return sqrt(k / (3 * n + k))
     # paper
@@ -55,20 +55,10 @@ def bestArm(stats):  # Most-pulled arm
     assert best != -1
     return best
 
-'''
-# tuple = (move, percentage, wins, pulls)
-def byPercentage(tuple):
-    return tuple[1]
-'''
-
-# tuple = (move, percentage, wins, pulls)
-def byPulls(tuple):
-    return tuple[3]
-
 
 def runUcb(player, board, C, moves, toplay, weights_data):
     stats = [[0, 0] for _ in moves]
-    stats_rave = [[0, 0] for _ in moves]
+    stats_rave = [[0, 20] for _ in moves]
     num_simulation = len(moves) * player.simulations_per_move
     for n in range(num_simulation):
         moveIndex = findBest(board, stats, stats_rave, C, n, weights_data, moves)
