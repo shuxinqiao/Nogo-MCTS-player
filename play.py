@@ -155,7 +155,7 @@ def saveResult():
     f.write("player 2 wins: {}\n".format(win2))
     f.close()
 
-playGames()
+playGames(10)
 outputResult()
 saveResult()
 
