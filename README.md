@@ -2,4 +2,4 @@
 
 Nogo game tuned MCTS player. Course quarterfinal winner.
 
-Dirctory nogo4 is the player. 
+Directory nogo4 is the player. 
